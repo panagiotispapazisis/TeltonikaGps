@@ -1,11 +1,11 @@
 from pathlib import Path
+import os
 
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = "django-insecure-6emkqr2#@sjd@nj^fxh1)uvm_5ty96ji-v7+7^x5jxwniz8kt0"
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -63,11 +64,11 @@ WSGI_APPLICATION = "teltonika.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'teltonika_db',  # Το όνομα της βάσης δεδομένων
-        'USER': 'teltonika_db_user',  # Το όνομα του χρήστη
-        'PASSWORD': 'cdP8gQTyPFx3MUGtfFRto6CGj0OR8mKR',  # Ο κωδικός πρόσβασης
-        'HOST': 'dpg-ct276et2ng1s73ebe04g-a.oregon-postgres.render.com',  # Το host
-        'PORT': '5432',  # Το default port για PostgreSQL
+        'NAME': 'teltonika_db',  
+        'USER': 'teltonika_db_user',  
+        'PASSWORD': 'cdP8gQTyPFx3MUGtfFRto6CGj0OR8mKR',  
+        'HOST': 'dpg-ct276et2ng1s73ebe04g-a.oregon-postgres.render.com', 
+        'PORT': '5432',  
     }
 }
 
@@ -92,9 +93,11 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
-STATIC_URL = "static/"
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
